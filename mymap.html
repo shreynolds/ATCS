@@ -1,0 +1,2386 @@
+<html>
+      <head>
+        <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+
+        <script type="text/javascript">
+          window.onload = function() {
+            L.mapquest.key = '	2lYkSpGYbCVAtzAG1ef2cJfWCnK7vINx'; //loading mapquest key
+
+            var map = L.mapquest.map('map', {
+              center: [39.82, -98.58], //center is center of US
+              layers: L.mapquest.tileLayer('map'), //creating the tile layer background
+              zoom: 5 //the start zoom
+            });
+
+      
+    todayLayer = L.layerGroup();
+    tomorrowLayer = L.layerGroup();
+      var choice = L.control({position: 'topright'});
+    choice.onAdd = function(map)
+    {
+        var div = L.DomUtil.create("div", 'leaflet-bar leaflet-control leaflet-control-custom');
+        div.style.backgroundColor = 'white';    
+
+        var today = document.createElement('input'); //creating the button for today
+        today.type= "radio"; //button type is radio
+        today.name = "choice"; //they need the same name and id so that it is one or the other
+        today.id = "id";
+        today.checked = true; //making it start checked, because we start with today's weather
+
+        var tomorrow = document.createElement('input'); //creating the button for tomorrow
+        tomorrow.type = "radio";
+        tomorrow.name = "choice";
+        tomorrow.id = "id";
+
+        var todayLabel = document.createElement('text'); //creating the label for today
+        todayLabel.htmlFor = "id";
+        todayLabel.appendChild(document.createTextNode('Current Weather'));
+
+        var tomorrowLabel = document.createElement('text'); //creating the label for tomorrow
+        tomorrowLabel.htmlFor = "id";
+        tomorrowLabel.appendChild(document.createTextNode('Forecast for Tomorrow'));
+
+        //adding all of the labels and radio buttons to the legend
+        div.appendChild(today);
+        div.appendChild(todayLabel);
+        div.appendChild(tomorrow);
+        div.appendChild(tomorrowLabel);
+
+        //what happens if today is checked -- shows the layer and legend for today, and 
+        //removes the layer and legend for tomorrow
+        today.addEventListener('change', function()
+        {
+            if(this.checked) {
+                map.removeLayer(tomorrowLayer);
+                map.addLayer(todayLayer);
+                map.removeControl(tomorrowLegend);
+                todayLegend.addTo(map);
+            }
+        });
+
+        //what happens if tomorrow is checked -- shows the layer and legend for tomorrow,
+        //and removes the layer and legend for today
+        tomorrow.addEventListener('change', function()
+        {
+            if(this.checked)
+            {
+                map.removeLayer(todayLayer);
+                map.addLayer(tomorrowLayer);
+                map.removeControl(todayLegend);
+                tomorrowLegend.addTo(map);
+            }
+        });
+
+        return div;
+    }
+    choice.addTo(map); //adding the buttons to the map
+function getColor(temp){if (temp < 30){return '#0571b0'}else if (temp < 60){return '#92c5de'}else if (temp < 80){return '#f4a582'}else{return '#ca0020'}} var legend = L.control({position: 'bottomleft'});   
+    legend.onAdd = function (map) {                    
+        var div = L.DomUtil.create('div', 'legend'),
+            colors = ['#0571b0','#92c5de', '#f4a582', '#ca0020'],
+            features = ["<30°F", "30-59°F", "60-79°F", ">80°F"];
+        div.style.backgroundColor = 'white';   //giving it a background
+
+        div.innerHTML += '<b>Legend <br></b>'; //Title
+        
+        //looping through the different colors and names associated with them, and adding ig to the legend
+        for(var x = 0; x < 4; x ++)
+        {
+            div.innerHTML += "<span style='background:" + colors[x]  + "; color: " + colors[x] + "'>OO</span>"
+            div.innerHTML += features[x];
+            div.innerHTML += "<br>";
+        }
+
+        return div;
+    };
+    legend.addTo(map); //adding this legend to the map
+        var marker = L.circle([40.7127837, -74.0059413], {
+        draggable: false,
+        color: getColor(46.04),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('New York, New York <br>46°F <br>Overcast clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([34.0522342, -118.2436849], {
+        draggable: false,
+        color: getColor(54.75),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Los Angeles, California <br>54°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([41.8781136, -87.6297982], {
+        draggable: false,
+        color: getColor(40.03),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Chicago, Illinois <br>40°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([29.7604267, -95.3698028], {
+        draggable: false,
+        color: getColor(47.57),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Houston, Texas <br>47°F <br>Light rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([39.9525839, -75.1652215], {
+        draggable: false,
+        color: getColor(45.84),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Philadelphia, Pennsylvania <br>45°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([33.4483771, -112.0740373], {
+        draggable: false,
+        color: getColor(42.37),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Phoenix, Arizona <br>42°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([29.4241219, -98.4936282], {
+        draggable: false,
+        color: getColor(48.83),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('San Antonio, Texas <br>48°F <br>Overcast clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([32.715738, -117.1610838], {
+        draggable: false,
+        color: getColor(53.37),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('San Diego, California <br>53°F <br>Smoke').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([32.7766642, -96.7969879], {
+        draggable: false,
+        color: getColor(42.94),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Dallas, Texas <br>42°F <br>Light rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([40.7607793, -111.8910474], {
+        draggable: false,
+        color: getColor(22.24),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Salt Lake City, Utah <br>22°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([30.267153, -97.7430608], {
+        draggable: false,
+        color: getColor(45.16),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Austin, Texas <br>45°F <br>Overcast clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([39.768403, -86.158068], {
+        draggable: false,
+        color: getColor(44.31),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Indianapolis, Indiana <br>44°F <br>Moderate rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([30.3321838, -81.655651], {
+        draggable: false,
+        color: getColor(64.27),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Jacksonville, Florida <br>64°F <br>Moderate rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([37.7749295, -122.4194155], {
+        draggable: false,
+        color: getColor(50.27),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('San Francisco, California <br>50°F <br>Haze').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([39.9611755, -82.9987942], {
+        draggable: false,
+        color: getColor(47.34),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Columbus, Ohio <br>47°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([35.2270869, -80.8431267], {
+        draggable: false,
+        color: getColor(43.2),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Charlotte, North Carolina <br>43°F <br>Moderate rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([42.331427, -83.0457538], {
+        draggable: false,
+        color: getColor(40.3),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Detroit, Michigan <br>40°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([31.7775757, -106.4424559], {
+        draggable: false,
+        color: getColor(35.71),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('El Paso, Texas <br>35°F <br>Few clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([35.1495343, -90.0489801], {
+        draggable: false,
+        color: getColor(53.4),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Memphis, Tennessee <br>53°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([47.6062095, -122.3320708], {
+        draggable: false,
+        color: getColor(43.61),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Seattle, Washington <br>43°F <br>Overcast clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([39.7392358, -104.990251], {
+        draggable: false,
+        color: getColor(32.5),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Denver, Colorado <br>32°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([38.9071923, -77.0368707], {
+        draggable: false,
+        color: getColor(42.37),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Washington, District of Columbia <br>42°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([42.3600825, -71.0588801], {
+        draggable: false,
+        color: getColor(41.02),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Boston, Massachusetts <br>41°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([36.1626638, -86.7816016], {
+        draggable: false,
+        color: getColor(53.31),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Nashville, Tennessee <br>53°F <br>Moderate rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([39.2903848, -76.6121893], {
+        draggable: false,
+        color: getColor(43.27),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Baltimore, Maryland <br>43°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([35.4675602, -97.5164276], {
+        draggable: false,
+        color: getColor(36.61),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Oklahoma City, Oklahoma <br>36°F <br>Overcast clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([38.2526647, -85.7584557], {
+        draggable: false,
+        color: getColor(50.67),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Louisville, Kentucky <br>50°F <br>Overcast clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([45.5230622, -122.6764816], {
+        draggable: false,
+        color: getColor(38.98),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Portland, Oregon <br>38°F <br>Fog').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([36.1699412, -115.1398296], {
+        draggable: false,
+        color: getColor(37.45),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Las Vegas, Nevada <br>37°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([43.0389025, -87.9064736], {
+        draggable: false,
+        color: getColor(33.55),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Milwaukee, Wisconsin <br>33°F <br>Haze').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([35.0853336, -106.6055534], {
+        draggable: false,
+        color: getColor(27.36),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Albuquerque, New Mexico <br>27°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([32.2217429, -110.926479], {
+        draggable: false,
+        color: getColor(43.59),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Tucson, Arizona <br>43°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([36.7468422, -119.7725868], {
+        draggable: false,
+        color: getColor(45.41),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Fresno, California <br>45°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([38.5815719, -121.4943996], {
+        draggable: false,
+        color: getColor(43.99),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Sacramento, California <br>43°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([39.0997265, -94.5785667], {
+        draggable: false,
+        color: getColor(34.57),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Kansas City, Missouri <br>34°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([36.8529263, -75.977985], {
+        draggable: false,
+        color: getColor(50.2),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Virginia Beach, Virginia <br>50°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([33.7489954, -84.3879824], {
+        draggable: false,
+        color: getColor(47.68),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Atlanta, Georgia <br>47°F <br>Moderate rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([38.8338816, -104.8213634], {
+        draggable: false,
+        color: getColor(29.25),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Colorado Springs, Colorado <br>29°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([41.2523634, -95.9979883], {
+        draggable: false,
+        color: getColor(25.23),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Omaha, Nebraska <br>25°F <br>Fog').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([35.7795897, -78.6381787], {
+        draggable: false,
+        color: getColor(41.47),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Raleigh, North Carolina <br>41°F <br>Moderate rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([25.7616798, -80.1917902], {
+        draggable: false,
+        color: getColor(81.03),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Miami, Florida <br>81°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([44.977753, -93.2650108], {
+        draggable: false,
+        color: getColor(27.21),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Minneapolis, Minnesota <br>27°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([36.1539816, -95.992775], {
+        draggable: false,
+        color: getColor(40.71),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Tulsa, Oklahoma <br>40°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([41.49932, -81.6943605], {
+        draggable: false,
+        color: getColor(47.82),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Cleveland, Ohio <br>47°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([37.688889, -97.336111], {
+        draggable: false,
+        color: getColor(35.42),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Wichita, Kansas <br>35°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([29.9510658, -90.0715323], {
+        draggable: false,
+        color: getColor(56.23),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('New Orleans, Louisiana <br>56°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([35.3732921, -119.0187125], {
+        draggable: false,
+        color: getColor(46.08),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Bakersfield, California <br>46°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([27.950575, -82.4571776], {
+        draggable: false,
+        color: getColor(69.08),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Tampa, Florida <br>69°F <br>Shower rain').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([21.3069444, -157.8583333], {
+        draggable: false,
+        color: getColor(73.11),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Honolulu, Hawaii <br>73°F <br>Scattered clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([38.6270025, -90.1994042], {
+        draggable: false,
+        color: getColor(44.24),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('St. Louis, Missouri <br>44°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([41.1399814, -104.8202462], {
+        draggable: false,
+        color: getColor(32.29),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Cheyenne, Wyoming <br>32°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([46.8771863, -96.7898034], {
+        draggable: false,
+        color: getColor(27.99),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Fargo, North Dakota <br>27°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([40.4406248, -79.9958864], {
+        draggable: false,
+        color: getColor(43.41),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Pittsburgh, Pennsylvania <br>43°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([61.2180556, -149.9002778], {
+        draggable: false,
+        color: getColor(11.91),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Anchorage, Alaska <br>11°F <br>Light snow').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([39.1031182, -84.5120196], {
+        draggable: false,
+        color: getColor(48.65),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Cincinnati, Ohio <br>48°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([43.6187102, -116.2146068], {
+        draggable: false,
+        color: getColor(28.81),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Boise City, Idaho <br>28°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([41.079273, -85.1393513], {
+        draggable: false,
+        color: getColor(41.72),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Fort Wayne, Indiana <br>41°F <br>Mist').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([45.7832856, -108.5006904], {
+        draggable: false,
+        color: getColor(35.96),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Billings, Montana <br>35°F <br>Broken clouds').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+      var marker = L.circle([43.5445959, -96.7311034], {
+        draggable: false,
+        color: getColor(28.09),
+        fillOpacity: 0,
+        radius: 50000
+       }).bindPopup('Sioux Falls, South Dakota <br>28°F <br>Clear sky').addTo(map);
+       
+       todayLayer.addLayer(marker);
+
+       var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [40.1127837,-74.6059413],
+            [40.1127837, -73.40594130000001],
+            [41.312783700000004, -73.40594130000001],
+            [41.312783700000004, -74.6059413]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [33.4522342,-118.8436849],
+            [33.4522342, -117.64368490000001],
+            [34.6522342, -117.64368490000001],
+            [34.6522342, -118.8436849]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [41.2781136,-88.22979819999999],
+            [41.2781136, -87.0297982],
+            [42.4781136, -87.0297982],
+            [42.4781136, -88.22979819999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/10d.png';
+            var imageBounds = [
+             [29.1604267,-95.9698028],
+            [29.1604267, -94.76980280000001],
+            [30.3604267, -94.76980280000001],
+            [30.3604267, -95.9698028]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [39.3525839,-75.7652215],
+            [39.3525839, -74.5652215],
+            [40.5525839, -74.5652215],
+            [40.5525839, -75.7652215]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [32.8483771,-112.6740373],
+            [32.8483771, -111.4740373],
+            [34.0483771, -111.4740373],
+            [34.0483771, -112.6740373]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [28.824121899999998,-99.0936282],
+            [28.824121899999998, -97.89362820000001],
+            [30.0241219, -97.89362820000001],
+            [30.0241219, -99.0936282]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [32.115738,-117.7610838],
+            [32.115738, -116.5610838],
+            [33.315738, -116.5610838],
+            [33.315738, -117.7610838]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/10d.png';
+            var imageBounds = [
+             [32.1766642,-97.3969879],
+            [32.1766642, -96.19698790000001],
+            [33.3766642, -96.19698790000001],
+            [33.3766642, -97.3969879]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [40.1607793,-112.4910474],
+            [40.1607793, -111.29104740000001],
+            [41.360779300000004, -111.29104740000001],
+            [41.360779300000004, -112.4910474]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [29.667153,-98.34306079999999],
+            [29.667153, -97.1430608],
+            [30.867153000000002, -97.1430608],
+            [30.867153000000002, -98.34306079999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/10d.png';
+            var imageBounds = [
+             [39.168403,-86.758068],
+            [39.168403, -85.558068],
+            [40.368403, -85.558068],
+            [40.368403, -86.758068]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/10d.png';
+            var imageBounds = [
+             [29.732183799999998,-82.255651],
+            [29.732183799999998, -81.05565100000001],
+            [30.9321838, -81.05565100000001],
+            [30.9321838, -82.255651]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [37.1749295,-123.0194155],
+            [37.1749295, -121.8194155],
+            [38.3749295, -121.8194155],
+            [38.3749295, -123.0194155]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [39.3611755,-83.5987942],
+            [39.3611755, -82.39879420000001],
+            [40.561175500000004, -82.39879420000001],
+            [40.561175500000004, -83.5987942]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/10d.png';
+            var imageBounds = [
+             [34.6270869,-81.4431267],
+            [34.6270869, -80.2431267],
+            [35.827086900000005, -80.2431267],
+            [35.827086900000005, -81.4431267]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [41.731427,-83.6457538],
+            [41.731427, -82.4457538],
+            [42.931427, -82.4457538],
+            [42.931427, -83.6457538]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/02d.png';
+            var imageBounds = [
+             [31.1775757,-107.0424559],
+            [31.1775757, -105.8424559],
+            [32.3775757, -105.8424559],
+            [32.3775757, -107.0424559]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [34.5495343,-90.64898009999999],
+            [34.5495343, -89.4489801],
+            [35.7495343, -89.4489801],
+            [35.7495343, -90.64898009999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [47.0062095,-122.93207079999999],
+            [47.0062095, -121.7320708],
+            [48.2062095, -121.7320708],
+            [48.2062095, -122.93207079999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [39.1392358,-105.590251],
+            [39.1392358, -104.390251],
+            [40.339235800000004, -104.390251],
+            [40.339235800000004, -105.590251]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [38.3071923,-77.63687069999999],
+            [38.3071923, -76.4368707],
+            [39.5071923, -76.4368707],
+            [39.5071923, -77.63687069999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [41.760082499999996,-71.65888009999999],
+            [41.760082499999996, -70.4588801],
+            [42.9600825, -70.4588801],
+            [42.9600825, -71.65888009999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/10d.png';
+            var imageBounds = [
+             [35.562663799999996,-87.3816016],
+            [35.562663799999996, -86.18160160000001],
+            [36.7626638, -86.18160160000001],
+            [36.7626638, -87.3816016]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [38.6903848,-77.21218929999999],
+            [38.6903848, -76.0121893],
+            [39.8903848, -76.0121893],
+            [39.8903848, -77.21218929999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [34.8675602,-98.1164276],
+            [34.8675602, -96.9164276],
+            [36.0675602, -96.9164276],
+            [36.0675602, -98.1164276]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [37.652664699999995,-86.3584557],
+            [37.652664699999995, -85.1584557],
+            [38.8526647, -85.1584557],
+            [38.8526647, -86.3584557]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [44.9230622,-123.2764816],
+            [44.9230622, -122.07648160000001],
+            [46.1230622, -122.07648160000001],
+            [46.1230622, -123.2764816]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [35.569941199999995,-115.7398296],
+            [35.569941199999995, -114.5398296],
+            [36.7699412, -114.5398296],
+            [36.7699412, -115.7398296]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [42.4389025,-88.50647359999999],
+            [42.4389025, -87.3064736],
+            [43.6389025, -87.3064736],
+            [43.6389025, -88.50647359999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [34.4853336,-107.2055534],
+            [34.4853336, -106.00555340000001],
+            [35.6853336, -106.00555340000001],
+            [35.6853336, -107.2055534]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [31.6217429,-111.526479],
+            [31.6217429, -110.326479],
+            [32.821742900000004, -110.326479],
+            [32.821742900000004, -111.526479]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [36.1468422,-120.3725868],
+            [36.1468422, -119.1725868],
+            [37.346842200000005, -119.1725868],
+            [37.346842200000005, -120.3725868]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [37.9815719,-122.09439959999999],
+            [37.9815719, -120.8943996],
+            [39.1815719, -120.8943996],
+            [39.1815719, -122.09439959999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [38.4997265,-95.17856669999999],
+            [38.4997265, -93.9785667],
+            [39.699726500000004, -93.9785667],
+            [39.699726500000004, -95.17856669999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [36.2529263,-76.577985],
+            [36.2529263, -75.37798500000001],
+            [37.4529263, -75.37798500000001],
+            [37.4529263, -76.577985]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/10d.png';
+            var imageBounds = [
+             [33.1489954,-84.98798239999999],
+            [33.1489954, -83.7879824],
+            [34.3489954, -83.7879824],
+            [34.3489954, -84.98798239999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [38.2338816,-105.42136339999999],
+            [38.2338816, -104.2213634],
+            [39.4338816, -104.2213634],
+            [39.4338816, -105.42136339999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [40.6523634,-96.5979883],
+            [40.6523634, -95.39798830000001],
+            [41.8523634, -95.39798830000001],
+            [41.8523634, -96.5979883]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/10d.png';
+            var imageBounds = [
+             [35.1795897,-79.23817869999999],
+            [35.1795897, -78.0381787],
+            [36.379589700000004, -78.0381787],
+            [36.379589700000004, -79.23817869999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [25.161679799999998,-80.7917902],
+            [25.161679799999998, -79.5917902],
+            [26.3616798, -79.5917902],
+            [26.3616798, -80.7917902]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [44.377753,-93.8650108],
+            [44.377753, -92.6650108],
+            [45.577753, -92.6650108],
+            [45.577753, -93.8650108]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [35.5539816,-96.59277499999999],
+            [35.5539816, -95.392775],
+            [36.7539816, -95.392775],
+            [36.7539816, -96.59277499999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [40.899319999999996,-82.2943605],
+            [40.899319999999996, -81.09436050000001],
+            [42.09932, -81.09436050000001],
+            [42.09932, -82.2943605]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [37.088889,-97.936111],
+            [37.088889, -96.73611100000001],
+            [38.288889000000005, -96.73611100000001],
+            [38.288889000000005, -97.936111]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [29.351065799999997,-90.6715323],
+            [29.351065799999997, -89.4715323],
+            [30.5510658, -89.4715323],
+            [30.5510658, -90.6715323]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [34.7732921,-119.6187125],
+            [34.7732921, -118.41871250000001],
+            [35.9732921, -118.41871250000001],
+            [35.9732921, -119.6187125]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/09d.png';
+            var imageBounds = [
+             [27.350575,-83.05717759999999],
+            [27.350575, -81.8571776],
+            [28.550575000000002, -81.8571776],
+            [28.550575000000002, -83.05717759999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/03n.png';
+            var imageBounds = [
+             [20.706944399999998,-158.4583333],
+            [20.706944399999998, -157.2583333],
+            [21.9069444, -157.2583333],
+            [21.9069444, -158.4583333]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [38.0270025,-90.7994042],
+            [38.0270025, -89.59940420000001],
+            [39.227002500000005, -89.59940420000001],
+            [39.227002500000005, -90.7994042]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [40.5399814,-105.4202462],
+            [40.5399814, -104.2202462],
+            [41.739981400000005, -104.2202462],
+            [41.739981400000005, -105.4202462]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [46.2771863,-97.38980339999999],
+            [46.2771863, -96.1898034],
+            [47.4771863, -96.1898034],
+            [47.4771863, -97.38980339999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [39.8406248,-80.5958864],
+            [39.8406248, -79.39588640000001],
+            [41.0406248, -79.39588640000001],
+            [41.0406248, -80.5958864]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/13n.png';
+            var imageBounds = [
+             [60.6180556,-150.5002778],
+            [60.6180556, -149.3002778],
+            [61.8180556, -149.3002778],
+            [61.8180556, -150.5002778]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [38.503118199999996,-85.1120196],
+            [38.503118199999996, -83.91201960000001],
+            [39.7031182, -83.91201960000001],
+            [39.7031182, -85.1120196]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [43.0187102,-116.81460679999999],
+            [43.0187102, -115.6146068],
+            [44.218710200000004, -115.6146068],
+            [44.218710200000004, -116.81460679999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/50d.png';
+            var imageBounds = [
+             [40.479273,-85.7393513],
+            [40.479273, -84.5393513],
+            [41.679273, -84.5393513],
+            [41.679273, -85.7393513]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/04d.png';
+            var imageBounds = [
+             [45.1832856,-109.10069039999999],
+            [45.1832856, -107.9006904],
+            [46.3832856, -107.9006904],
+            [46.3832856, -109.10069039999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+              var imageUrl = 'http://openweathermap.org/img/w/01d.png';
+            var imageBounds = [
+             [42.944595899999996,-97.33110339999999],
+            [42.944595899999996, -96.1311034],
+            [44.1445959, -96.1311034],
+            [44.1445959, -97.33110339999999]
+            ];
+
+             overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.8).addTo(map); //adding image overlay
+             
+             todayLayer.addLayer(overlay); //adding it to the layer
+             var marker = L.circle([40.7127837, -74.0059413], {
+                draggable: false,
+                color: getColor(46),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('New York, New York <br>46°F <br>Mostly cloudy with light rain');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [40.1127837,-74.6059413],
+                    [40.1127837, -73.40594130000001],
+                    [41.312783700000004, -73.40594130000001],
+                    [41.312783700000004, -74.6059413]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([34.0522342, -118.2436849], {
+                draggable: false,
+                color: getColor(63),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Los Angeles, California <br>63°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [33.4522342,-118.8436849],
+                    [33.4522342, -117.64368490000001],
+                    [34.6522342, -117.64368490000001],
+                    [34.6522342, -118.8436849]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([41.8781136, -87.6297982], {
+                draggable: false,
+                color: getColor(37),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Chicago, Illinois <br>37°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [41.2781136,-88.22979819999999],
+                    [41.2781136, -87.0297982],
+                    [42.4781136, -87.0297982],
+                    [42.4781136, -88.22979819999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([29.7604267, -95.3698028], {
+                draggable: false,
+                color: getColor(52),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Houston, Texas <br>52°F <br>Sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/sunny.png';
+                    var imageBounds = [
+                     [29.1604267,-95.9698028],
+                    [29.1604267, -94.76980280000001],
+                    [30.3604267, -94.76980280000001],
+                    [30.3604267, -95.9698028]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([39.9525839, -75.1652215], {
+                draggable: false,
+                color: getColor(45),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Philadelphia, Pennsylvania <br>45°F <br>Cloudy with rain');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [39.3525839,-75.7652215],
+                    [39.3525839, -74.5652215],
+                    [40.5525839, -74.5652215],
+                    [40.5525839, -75.7652215]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([33.4483771, -112.0740373], {
+                draggable: false,
+                color: getColor(61),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Phoenix, Arizona <br>61°F <br>Partly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [32.8483771,-112.6740373],
+                    [32.8483771, -111.4740373],
+                    [34.0483771, -111.4740373],
+                    [34.0483771, -112.6740373]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([29.4241219, -98.4936282], {
+                draggable: false,
+                color: getColor(52),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('San Antonio, Texas <br>52°F <br>Sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/sunny.png';
+                    var imageBounds = [
+                     [28.824121899999998,-99.0936282],
+                    [28.824121899999998, -97.89362820000001],
+                    [30.0241219, -97.89362820000001],
+                    [30.0241219, -99.0936282]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([32.715738, -117.1610838], {
+                draggable: false,
+                color: getColor(61),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('San Diego, California <br>61°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [32.115738,-117.7610838],
+                    [32.115738, -116.5610838],
+                    [33.315738, -116.5610838],
+                    [33.315738, -117.7610838]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([32.7766642, -96.7969879], {
+                draggable: false,
+                color: getColor(47),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Dallas, Texas <br>47°F <br>Sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/sunny.png';
+                    var imageBounds = [
+                     [32.1766642,-97.3969879],
+                    [32.1766642, -96.19698790000001],
+                    [33.3766642, -96.19698790000001],
+                    [33.3766642, -97.3969879]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([40.7607793, -111.8910474], {
+                draggable: false,
+                color: getColor(39),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Salt Lake City, Utah <br>39°F <br>Partly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [40.1607793,-112.4910474],
+                    [40.1607793, -111.29104740000001],
+                    [41.360779300000004, -111.29104740000001],
+                    [41.360779300000004, -112.4910474]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([30.267153, -97.7430608], {
+                draggable: false,
+                color: getColor(51),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Austin, Texas <br>51°F <br>Sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/sunny.png';
+                    var imageBounds = [
+                     [29.667153,-98.34306079999999],
+                    [29.667153, -97.1430608],
+                    [30.867153000000002, -97.1430608],
+                    [30.867153000000002, -98.34306079999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([39.768403, -86.158068], {
+                draggable: false,
+                color: getColor(38),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Indianapolis, Indiana <br>38°F <br>Mostly cloudy with rain');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [39.168403,-86.758068],
+                    [39.168403, -85.558068],
+                    [40.368403, -85.558068],
+                    [40.368403, -86.758068]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([30.3321838, -81.655651], {
+                draggable: false,
+                color: getColor(62),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Jacksonville, Florida <br>62°F <br>Partly cloudy with scattered showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudyr.png';
+                    var imageBounds = [
+                     [29.732183799999998,-82.255651],
+                    [29.732183799999998, -81.05565100000001],
+                    [30.9321838, -81.05565100000001],
+                    [30.9321838, -82.255651]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([37.7749295, -122.4194155], {
+                draggable: false,
+                color: getColor(58),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('San Francisco, California <br>58°F <br>Mostly cloudy with scattered showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudyr.png';
+                    var imageBounds = [
+                     [37.1749295,-123.0194155],
+                    [37.1749295, -121.8194155],
+                    [38.3749295, -121.8194155],
+                    [38.3749295, -123.0194155]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([39.9611755, -82.9987942], {
+                draggable: false,
+                color: getColor(45),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Columbus, Ohio <br>45°F <br>Cloudy with rain');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [39.3611755,-83.5987942],
+                    [39.3611755, -82.39879420000001],
+                    [40.561175500000004, -82.39879420000001],
+                    [40.561175500000004, -83.5987942]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([35.2270869, -80.8431267], {
+                draggable: false,
+                color: getColor(50),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Charlotte, North Carolina <br>50°F <br>Mostly cloudy with scattered showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudyr.png';
+                    var imageBounds = [
+                     [34.6270869,-81.4431267],
+                    [34.6270869, -80.2431267],
+                    [35.827086900000005, -80.2431267],
+                    [35.827086900000005, -81.4431267]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([42.331427, -83.0457538], {
+                draggable: false,
+                color: getColor(37),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Detroit, Michigan <br>37°F <br>Partly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [41.731427,-83.6457538],
+                    [41.731427, -82.4457538],
+                    [42.931427, -82.4457538],
+                    [42.931427, -83.6457538]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([31.7775757, -106.4424559], {
+                draggable: false,
+                color: getColor(48),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('El Paso, Texas <br>48°F <br>Mostly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudy.png';
+                    var imageBounds = [
+                     [31.1775757,-107.0424559],
+                    [31.1775757, -105.8424559],
+                    [32.3775757, -105.8424559],
+                    [32.3775757, -107.0424559]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([35.1495343, -90.0489801], {
+                draggable: false,
+                color: getColor(44),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Memphis, Tennessee <br>44°F <br>Cloudy with chance of light showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/showers.png';
+                    var imageBounds = [
+                     [34.5495343,-90.64898009999999],
+                    [34.5495343, -89.4489801],
+                    [35.7495343, -89.4489801],
+                    [35.7495343, -90.64898009999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([47.6062095, -122.3320708], {
+                draggable: false,
+                color: getColor(46),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Seattle, Washington <br>46°F <br>Mostly cloudy with scattered showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudyr.png';
+                    var imageBounds = [
+                     [47.0062095,-122.93207079999999],
+                    [47.0062095, -121.7320708],
+                    [48.2062095, -121.7320708],
+                    [48.2062095, -122.93207079999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([39.7392358, -104.990251], {
+                draggable: false,
+                color: getColor(43),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Denver, Colorado <br>43°F <br>Partly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [39.1392358,-105.590251],
+                    [39.1392358, -104.390251],
+                    [40.339235800000004, -104.390251],
+                    [40.339235800000004, -105.590251]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([38.9071923, -77.0368707], {
+                draggable: false,
+                color: getColor(48),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Washington, District of Columbia <br>48°F <br>Cloudy with light rain');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [38.3071923,-77.63687069999999],
+                    [38.3071923, -76.4368707],
+                    [39.5071923, -76.4368707],
+                    [39.5071923, -77.63687069999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([42.3600825, -71.0588801], {
+                draggable: false,
+                color: getColor(41),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Boston, Massachusetts <br>41°F <br>Mostly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudy.png';
+                    var imageBounds = [
+                     [41.760082499999996,-71.65888009999999],
+                    [41.760082499999996, -70.4588801],
+                    [42.9600825, -70.4588801],
+                    [42.9600825, -71.65888009999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([36.1626638, -86.7816016], {
+                draggable: false,
+                color: getColor(49),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Nashville, Tennessee <br>49°F <br>Mostly cloudy with light showers likely');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/showers.png';
+                    var imageBounds = [
+                     [35.562663799999996,-87.3816016],
+                    [35.562663799999996, -86.18160160000001],
+                    [36.7626638, -86.18160160000001],
+                    [36.7626638, -87.3816016]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([39.2903848, -76.6121893], {
+                draggable: false,
+                color: getColor(48),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Baltimore, Maryland <br>48°F <br>Cloudy with light rain');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [38.6903848,-77.21218929999999],
+                    [38.6903848, -76.0121893],
+                    [39.8903848, -76.0121893],
+                    [39.8903848, -77.21218929999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([35.4675602, -97.5164276], {
+                draggable: false,
+                color: getColor(44),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Oklahoma City, Oklahoma <br>44°F <br>Sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/sunny.png';
+                    var imageBounds = [
+                     [34.8675602,-98.1164276],
+                    [34.8675602, -96.9164276],
+                    [36.0675602, -96.9164276],
+                    [36.0675602, -98.1164276]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([38.2526647, -85.7584557], {
+                draggable: false,
+                color: getColor(46),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Louisville, Kentucky <br>46°F <br>Cloudy with showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/showers.png';
+                    var imageBounds = [
+                     [37.652664699999995,-86.3584557],
+                    [37.652664699999995, -85.1584557],
+                    [38.8526647, -85.1584557],
+                    [38.8526647, -86.3584557]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([45.5230622, -122.6764816], {
+                draggable: false,
+                color: getColor(45),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Portland, Oregon <br>45°F <br>Mostly cloudy with scattered showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudyr.png';
+                    var imageBounds = [
+                     [44.9230622,-123.2764816],
+                    [44.9230622, -122.07648160000001],
+                    [46.1230622, -122.07648160000001],
+                    [46.1230622, -123.2764816]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([36.1699412, -115.1398296], {
+                draggable: false,
+                color: getColor(52),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Las Vegas, Nevada <br>52°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [35.569941199999995,-115.7398296],
+                    [35.569941199999995, -114.5398296],
+                    [36.7699412, -114.5398296],
+                    [36.7699412, -115.7398296]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([43.0389025, -87.9064736], {
+                draggable: false,
+                color: getColor(35),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Milwaukee, Wisconsin <br>35°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [42.4389025,-88.50647359999999],
+                    [42.4389025, -87.3064736],
+                    [43.6389025, -87.3064736],
+                    [43.6389025, -88.50647359999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([35.0853336, -106.6055534], {
+                draggable: false,
+                color: getColor(40),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Albuquerque, New Mexico <br>40°F <br>Partly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [34.4853336,-107.2055534],
+                    [34.4853336, -106.00555340000001],
+                    [35.6853336, -106.00555340000001],
+                    [35.6853336, -107.2055534]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([32.2217429, -110.926479], {
+                draggable: false,
+                color: getColor(57),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Tucson, Arizona <br>57°F <br>Mostly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudy.png';
+                    var imageBounds = [
+                     [31.6217429,-111.526479],
+                    [31.6217429, -110.326479],
+                    [32.821742900000004, -110.326479],
+                    [32.821742900000004, -111.526479]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([36.7468422, -119.7725868], {
+                draggable: false,
+                color: getColor(51),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Fresno, California <br>51°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [36.1468422,-120.3725868],
+                    [36.1468422, -119.1725868],
+                    [37.346842200000005, -119.1725868],
+                    [37.346842200000005, -120.3725868]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([38.5815719, -121.4943996], {
+                draggable: false,
+                color: getColor(53),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Sacramento, California <br>53°F <br>Mostly cloudy with isolated showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudyr.png';
+                    var imageBounds = [
+                     [37.9815719,-122.09439959999999],
+                    [37.9815719, -120.8943996],
+                    [39.1815719, -120.8943996],
+                    [39.1815719, -122.09439959999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([39.0997265, -94.5785667], {
+                draggable: false,
+                color: getColor(42),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Kansas City, Missouri <br>42°F <br>Sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/sunny.png';
+                    var imageBounds = [
+                     [38.4997265,-95.17856669999999],
+                    [38.4997265, -93.9785667],
+                    [39.699726500000004, -93.9785667],
+                    [39.699726500000004, -95.17856669999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([36.8529263, -75.977985], {
+                draggable: false,
+                color: getColor(56),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Virginia Beach, Virginia <br>56°F <br>Cloudy with showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/showers.png';
+                    var imageBounds = [
+                     [36.2529263,-76.577985],
+                    [36.2529263, -75.37798500000001],
+                    [37.4529263, -75.37798500000001],
+                    [37.4529263, -76.577985]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([33.7489954, -84.3879824], {
+                draggable: false,
+                color: getColor(49),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Atlanta, Georgia <br>49°F <br>Mostly cloudy with scattered showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudyr.png';
+                    var imageBounds = [
+                     [33.1489954,-84.98798239999999],
+                    [33.1489954, -83.7879824],
+                    [34.3489954, -83.7879824],
+                    [34.3489954, -84.98798239999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([38.8338816, -104.8213634], {
+                draggable: false,
+                color: getColor(42),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Colorado Springs, Colorado <br>42°F <br>Partly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [38.2338816,-105.42136339999999],
+                    [38.2338816, -104.2213634],
+                    [39.4338816, -104.2213634],
+                    [39.4338816, -105.42136339999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([41.2523634, -95.9979883], {
+                draggable: false,
+                color: getColor(37),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Omaha, Nebraska <br>37°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [40.6523634,-96.5979883],
+                    [40.6523634, -95.39798830000001],
+                    [41.8523634, -95.39798830000001],
+                    [41.8523634, -96.5979883]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([35.7795897, -78.6381787], {
+                draggable: false,
+                color: getColor(53),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Raleigh, North Carolina <br>53°F <br>Mostly cloudy with light showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/showers.png';
+                    var imageBounds = [
+                     [35.1795897,-79.23817869999999],
+                    [35.1795897, -78.0381787],
+                    [36.379589700000004, -78.0381787],
+                    [36.379589700000004, -79.23817869999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([25.7616798, -80.1917902], {
+                draggable: false,
+                color: getColor(73),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Miami, Florida <br>73°F <br>Mostly cloudy with scattered storms');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudyt.png';
+                    var imageBounds = [
+                     [25.161679799999998,-80.7917902],
+                    [25.161679799999998, -79.5917902],
+                    [26.3616798, -79.5917902],
+                    [26.3616798, -80.7917902]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([44.977753, -93.2650108], {
+                draggable: false,
+                color: getColor(33),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Minneapolis, Minnesota <br>33°F <br>Sunny with widespread freezing fog');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/fog.png';
+                    var imageBounds = [
+                     [44.377753,-93.8650108],
+                    [44.377753, -92.6650108],
+                    [45.577753, -92.6650108],
+                    [45.577753, -93.8650108]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([36.1539816, -95.992775], {
+                draggable: false,
+                color: getColor(43),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Tulsa, Oklahoma <br>43°F <br>Sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/sunny.png';
+                    var imageBounds = [
+                     [35.5539816,-96.59277499999999],
+                    [35.5539816, -95.392775],
+                    [36.7539816, -95.392775],
+                    [36.7539816, -96.59277499999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([41.49932, -81.6943605], {
+                draggable: false,
+                color: getColor(42),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Cleveland, Ohio <br>42°F <br>Mostly cloudy with light rain likely');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [40.899319999999996,-82.2943605],
+                    [40.899319999999996, -81.09436050000001],
+                    [42.09932, -81.09436050000001],
+                    [42.09932, -82.2943605]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([37.688889, -97.336111], {
+                draggable: false,
+                color: getColor(44),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Wichita, Kansas <br>44°F <br>Sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/sunny.png';
+                    var imageBounds = [
+                     [37.088889,-97.936111],
+                    [37.088889, -96.73611100000001],
+                    [38.288889000000005, -96.73611100000001],
+                    [38.288889000000005, -97.936111]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([29.9510658, -90.0715323], {
+                draggable: false,
+                color: getColor(53),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('New Orleans, Louisiana <br>53°F <br>Mostly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudy.png';
+                    var imageBounds = [
+                     [29.351065799999997,-90.6715323],
+                    [29.351065799999997, -89.4715323],
+                    [30.5510658, -89.4715323],
+                    [30.5510658, -90.6715323]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([35.3732921, -119.0187125], {
+                draggable: false,
+                color: getColor(53),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Bakersfield, California <br>53°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [34.7732921,-119.6187125],
+                    [34.7732921, -118.41871250000001],
+                    [35.9732921, -118.41871250000001],
+                    [35.9732921, -119.6187125]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([27.950575, -82.4571776], {
+                draggable: false,
+                color: getColor(64),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Tampa, Florida <br>64°F <br>Partly cloudy with scattered showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudyr.png';
+                    var imageBounds = [
+                     [27.350575,-83.05717759999999],
+                    [27.350575, -81.8571776],
+                    [28.550575000000002, -81.8571776],
+                    [28.550575000000002, -83.05717759999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([21.3069444, -157.8583333], {
+                draggable: false,
+                color: getColor(77),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Honolulu, Hawaii <br>77°F <br>Partly cloudy with isolated showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudyr.png';
+                    var imageBounds = [
+                     [20.706944399999998,-158.4583333],
+                    [20.706944399999998, -157.2583333],
+                    [21.9069444, -157.2583333],
+                    [21.9069444, -158.4583333]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([38.6270025, -90.1994042], {
+                draggable: false,
+                color: getColor(39),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('St. Louis, Missouri <br>39°F <br>Partly cloudy with light rain likely');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [38.0270025,-90.7994042],
+                    [38.0270025, -89.59940420000001],
+                    [39.227002500000005, -89.59940420000001],
+                    [39.227002500000005, -90.7994042]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([41.1399814, -104.8202462], {
+                draggable: false,
+                color: getColor(39),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Cheyenne, Wyoming <br>39°F <br>Partly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [40.5399814,-105.4202462],
+                    [40.5399814, -104.2202462],
+                    [41.739981400000005, -104.2202462],
+                    [41.739981400000005, -105.4202462]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([46.8771863, -96.7898034], {
+                draggable: false,
+                color: getColor(33),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Fargo, North Dakota <br>33°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [46.2771863,-97.38980339999999],
+                    [46.2771863, -96.1898034],
+                    [47.4771863, -96.1898034],
+                    [47.4771863, -97.38980339999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([40.4406248, -79.9958864], {
+                draggable: false,
+                color: getColor(45),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Pittsburgh, Pennsylvania <br>45°F <br>Cloudy with light rain likely');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [39.8406248,-80.5958864],
+                    [39.8406248, -79.39588640000001],
+                    [41.0406248, -79.39588640000001],
+                    [41.0406248, -80.5958864]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([61.2180556, -149.9002778], {
+                draggable: false,
+                color: getColor(21),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Anchorage, Alaska <br>21°F <br>Partly cloudy with isolated light snow showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/snowshowers.png';
+                    var imageBounds = [
+                     [60.6180556,-150.5002778],
+                    [60.6180556, -149.3002778],
+                    [61.8180556, -149.3002778],
+                    [61.8180556, -150.5002778]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([39.1031182, -84.5120196], {
+                draggable: false,
+                color: getColor(44),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Cincinnati, Ohio <br>44°F <br>Cloudy with rain');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/rain.png';
+                    var imageBounds = [
+                     [38.503118199999996,-85.1120196],
+                    [38.503118199999996, -83.91201960000001],
+                    [39.7031182, -83.91201960000001],
+                    [39.7031182, -85.1120196]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([43.6187102, -116.2146068], {
+                draggable: false,
+                color: getColor(37),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Boise City, Idaho <br>37°F <br>Partly cloudy');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [43.0187102,-116.81460679999999],
+                    [43.0187102, -115.6146068],
+                    [44.218710200000004, -115.6146068],
+                    [44.218710200000004, -116.81460679999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([41.079273, -85.1393513], {
+                draggable: false,
+                color: getColor(36),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Fort Wayne, Indiana <br>36°F <br>Mostly cloudy with isolated showers');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/mcloudyr.png';
+                    var imageBounds = [
+                     [40.479273,-85.7393513],
+                    [40.479273, -84.5393513],
+                    [41.679273, -84.5393513],
+                    [41.679273, -85.7393513]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([45.7832856, -108.5006904], {
+                draggable: false,
+                color: getColor(39),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Billings, Montana <br>39°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [45.1832856,-109.10069039999999],
+                    [45.1832856, -107.9006904],
+                    [46.3832856, -107.9006904],
+                    [46.3832856, -109.10069039999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay);var marker = L.circle([43.5445959, -96.7311034], {
+                draggable: false,
+                color: getColor(35),
+                fillOpacity: 0,
+                radius: 50000
+               }).bindPopup('Sioux Falls, South Dakota <br>35°F <br>Mostly sunny');
+
+               tomorrowLayer.addLayer(marker);
+               var imageUrl = 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png';
+                    var imageBounds = [
+                     [42.944595899999996,-97.33110339999999],
+                    [42.944595899999996, -96.1311034],
+                    [44.1445959, -96.1311034],
+                    [44.1445959, -97.33110339999999]
+                    ];
+
+                     overlay = L.imageOverlay(imageUrl, imageBounds).setOpacity(0.9);
+
+                     tomorrowLayer.addLayer(overlay); var todayLegend = L.control({position: 'bottomleft'});   
+        todayLegend.onAdd = function (map) {                    
+            var div = L.DomUtil.create('div', 'legend'),
+                images = ['http://openweathermap.org/img/w/04d.png', 'http://openweathermap.org/img/w/01d.png', 'http://openweathermap.org/img/w/50d.png', 'http://openweathermap.org/img/w/10d.png', 'http://openweathermap.org/img/w/02d.png', 'http://openweathermap.org/img/w/09d.png', 'http://openweathermap.org/img/w/03n.png', 'http://openweathermap.org/img/w/13n.png'],
+                names = ['overcast clouds, broken clouds', 'clear sky', 'mist, smoke, haze, fog', 'light rain, moderate rain', 'few clouds', 'shower rain', 'scattered clouds', 'light snow'];
+            div.style.backgroundColor = 'white';  //giving it a background 
+
+        //looping through all the images, and putting the associated text next to them
+            div.innerHTML += '<b>Legend <br></b>'; //Title
+            for(var x = 0; x < 8; x ++)
+            {
+                div.innerHTML += "<img src=" + images[x] + " alt='' width = '30' height = '30' >";
+                div.innerHTML += names[x];
+                div.innerHTML += "<br>";
+            }
+
+            return div;
+        };
+        
+        //adding it to the map
+        todayLegend.addTo(map); 
+    var tomorrowLegend = L.control({position: 'bottomleft'});   
+        tomorrowLegend.onAdd = function (map) {                    
+            var div = L.DomUtil.create('div', 'legend'),
+                images = ['https://cdn.aerisapi.com/wxicons/v2/rain.png', 'https://cdn.aerisapi.com/wxicons/v2/pcloudy.png', 'https://cdn.aerisapi.com/wxicons/v2/sunny.png', 'https://cdn.aerisapi.com/wxicons/v2/pcloudyr.png', 'https://cdn.aerisapi.com/wxicons/v2/mcloudyr.png', 'https://cdn.aerisapi.com/wxicons/v2/mcloudy.png', 'https://cdn.aerisapi.com/wxicons/v2/showers.png', 'https://cdn.aerisapi.com/wxicons/v2/mcloudyt.png', 'https://cdn.aerisapi.com/wxicons/v2/fog.png', 'https://cdn.aerisapi.com/wxicons/v2/snowshowers.png'],
+                names = ['Light Rain', 'Mostly Sunny, Partly Cloudy', 'Sunny', 'Scattered Showers, Isolated Showers', 'Scattered Showers, Isolated Showers', 'Mostly Cloudy', 'Scattered Showers', 'Scattered Storms', 'Widespread Freezing Fog', 'Isolated Snow Showers'];
+            div.style.backgroundColor = 'white';   //giving it a background
+
+        //looping through the images and associated text and adding it to the legend
+            div.innerHTML += '<b>Legend <br></b>'; //Title
+            for(var x = 0; x < 10; x ++)
+            {
+                div.innerHTML += "<img src=" + images[x] + " alt='' width = '30' height = '30' >";
+                div.innerHTML += names[x];
+                div.innerHTML += "<br>";
+            }
+            return div;
+        };
+        
+          };
+        </script>
+      </head>
+
+      <body style="border: 0; margin: 0;">
+        <div id="map" style="width: 100%; height: 675px;"></div>
+      </body>
+    </html>
